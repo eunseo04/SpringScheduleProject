@@ -11,4 +11,5 @@ public class ScheduleRequestDto {
     private String password;
     private String title;
     private String post;
+    private String comment;
 }

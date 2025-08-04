@@ -14,27 +14,37 @@ public class ScheduleEntity extends BaseEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false)
     private String name;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, length = 30)
     private String title;
 
+    @Column(nullable = false, length = 200)
     private String post;
+
+    @Column(nullable = false, length = 100)
+    private String comment;
 
     public ScheduleEntity(String title, String post, String name, String password) {
         this.title = title;
         this.post = post;
         this.name = name;
         this.password = password;
-
     }
 
-    public void update(String title, String post) {
+    public ScheduleEntity(Long id, String name, String password, String comment) {
+        this.id = id;
+        this.comment = comment;
+        this.name = name;
+        this.password = password;
+    }
+
+    public void update(String title, String name) {
         this.title = title;
-        this.post = post;
+        this.name = name;
     }
 }

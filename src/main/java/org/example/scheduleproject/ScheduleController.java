@@ -13,8 +13,8 @@ class ScheduleController {
 
     //요청받기
     @GetMapping
-    public List<ScheduleResponseDto> viewAll(){
-        return scheduleService.viewAllPosts();
+    public List<ScheduleResponseDto> viewAll(@RequestParam(required = false) String name){
+        return scheduleService.viewAllPosts(name);
     }
 
     @GetMapping("/{id}")
@@ -32,8 +32,13 @@ class ScheduleController {
         return scheduleService.posting(dto);
     }
 
+    @PostMapping("/{id}")
+    public ScheduleResponseDto addComment(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
+        return scheduleService.comment(id, dto);
+    }
+
     @DeleteMapping("/{id}")
-    public void deleteSchedule(@PathVariable Long id){
-        scheduleService.deletePost(id);
+    public void deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
+        scheduleService.deletePost(id, dto);
     }
 }

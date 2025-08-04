@@ -23,12 +23,19 @@ public class ScheduleService {
     }
 
     @Transactional(readOnly = true) //조회만 하므로 readOnly
-    public List<ScheduleResponseDto> viewAllPosts(){ //전체 조회
+    public List<ScheduleResponseDto> viewAllPosts(String name){ //작성자명을 기준으로 한 전체 조회
         List<ScheduleResponseDto> entity = new ArrayList<>();
-        for(ScheduleEntity scheduleEntity : scheduleRepository.findAll()){
-            entity.add(new ScheduleResponseDto(scheduleEntity));
+        if (name != null) {
+            for(ScheduleEntity scheduleEntity : scheduleRepository.findByNameOrderByUpdatedAtDesc(name)) {
+                entity.add(new ScheduleResponseDto(scheduleEntity));
+            }
+            return entity;
+        } else{
+            for(ScheduleEntity scheduleEntity : scheduleRepository.findAllByOrderByUpdatedAtDesc()) {
+                entity.add(new ScheduleResponseDto(scheduleEntity));
+            }
+            return entity;
         }
-        return entity;
     }
 
     @Transactional(readOnly = true)
@@ -38,15 +45,32 @@ public class ScheduleService {
     }
 
     @Transactional
-    public void deletePost(Long id){
+    public void deletePost(Long id, ScheduleRequestDto dto){
+        ScheduleEntity schedule = scheduleRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Schedule not found"));
+        if (!dto.getPassword().equals(schedule.getPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
         scheduleRepository.deleteById(id);
     }
 
     @Transactional
     public ScheduleResponseDto update(Long id, ScheduleRequestDto dto) {
         ScheduleEntity schedule = scheduleRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Schedule not found"));
-        schedule.update(dto.getTitle(), dto.getPost());
+        if (!dto.getPassword().equals(schedule.getPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+        schedule.update(dto.getTitle(), dto.getName());
         return new ScheduleResponseDto(dto, schedule);
+    }
+
+    @Transactional
+    public ScheduleResponseDto comment(Long id, ScheduleRequestDto dto) {
+        ScheduleEntity schedule = scheduleRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Schedule not found"));
+        if (!dto.getPassword().equals(schedule.getPassword())) {
+            throw new IllegalArgumentException("Wrong password");
+        }
+        ScheduleEntity entity = scheduleRepository.save(new ScheduleEntity(dto.getId(), dto.getName(), dto.getPassword(), dto.getComment()));
+        return new ScheduleResponseDto(entity);
     }
 }
 
