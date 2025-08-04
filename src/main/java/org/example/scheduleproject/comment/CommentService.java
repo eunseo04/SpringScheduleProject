@@ -18,6 +18,6 @@ public class CommentService {
     public CommentResponseDto comment(Long id, CommentRequestDto dto) {
         ScheduleEntity schedule = scheduleRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Schedule not found"));
         CommentEntity entity = commentRepository.save(new CommentEntity(dto.getCommentName(), dto.getCommentPassword(), dto.getComment(), schedule));
-        return entity;
+        return new CommentResponseDto(entity);
     }
 }

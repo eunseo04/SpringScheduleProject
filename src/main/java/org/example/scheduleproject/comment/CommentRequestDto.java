@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class CommentRequestDto {
-    private Long commentId;
     private String comment;
     private String commentName;
     private String commentPassword;
