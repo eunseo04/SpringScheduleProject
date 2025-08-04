@@ -32,11 +32,6 @@ class ScheduleController {
         return scheduleService.posting(dto);
     }
 
-    @PostMapping("/{id}")
-    public ScheduleResponseDto addComment(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
-        return scheduleService.comment(id, dto);
-    }
-
     @DeleteMapping("/{id}")
     public void deleteSchedule(@PathVariable Long id, @RequestBody ScheduleRequestDto dto){
         scheduleService.deletePost(id, dto);

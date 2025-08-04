@@ -11,7 +11,6 @@ public class ScheduleResponseDto {
     private String name;
     private String title;
     private String post;
-    private String comment;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -32,12 +31,4 @@ public class ScheduleResponseDto {
         this.createdAt = schedule.getCreatedAt();
         this.updatedAt = schedule.getUpdatedAt();
     }
-
-//    public ScheduleResponseDto(ScheduleRequestDto dto, ScheduleEntity schedule){
-//        this.id = schedule.getId();
-//        this.name = dto.getName();
-//        this.comment = dto.getComment();
-//        this.createdAt = schedule.getCreatedAt();
-//        this.updatedAt = schedule.getUpdatedAt();
-//    }
 }

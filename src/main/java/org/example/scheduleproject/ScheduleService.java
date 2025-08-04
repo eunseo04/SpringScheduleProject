@@ -62,15 +62,5 @@ public class ScheduleService {
         schedule.update(dto.getTitle(), dto.getName());
         return new ScheduleResponseDto(dto, schedule);
     }
-
-    @Transactional
-    public ScheduleResponseDto comment(Long id, ScheduleRequestDto dto) {
-        ScheduleEntity schedule = scheduleRepository.findById(id).orElseThrow(()->new EntityNotFoundException("Schedule not found"));
-        if (!dto.getPassword().equals(schedule.getPassword())) {
-            throw new IllegalArgumentException("Wrong password");
-        }
-        ScheduleEntity entity = scheduleRepository.save(new ScheduleEntity(dto.getId(), dto.getName(), dto.getPassword(), dto.getComment()));
-        return new ScheduleResponseDto(entity);
-    }
 }
 
